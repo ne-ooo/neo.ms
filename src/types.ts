@@ -43,6 +43,51 @@ export type TimeUnit =
   | 'ms'
 
 /**
+ * Unit names compatible with the type definitions for ms@2.1.3.
+ */
+export type Unit =
+  | 'Years'
+  | 'Year'
+  | 'Yrs'
+  | 'Yr'
+  | 'Y'
+  | 'Weeks'
+  | 'Week'
+  | 'W'
+  | 'Days'
+  | 'Day'
+  | 'D'
+  | 'Hours'
+  | 'Hour'
+  | 'Hrs'
+  | 'Hr'
+  | 'H'
+  | 'Minutes'
+  | 'Minute'
+  | 'Mins'
+  | 'Min'
+  | 'M'
+  | 'Seconds'
+  | 'Second'
+  | 'Secs'
+  | 'Sec'
+  | 's'
+  | 'Milliseconds'
+  | 'Millisecond'
+  | 'Msecs'
+  | 'Msec'
+  | 'Ms'
+
+/** A supported unit in the canonical, uppercase, or lowercase form. */
+export type UnitAnyCase = Unit | Uppercase<Unit> | Lowercase<Unit>
+
+/** A duration string accepted by ms@2.1.3's public TypeScript API. */
+export type StringValue =
+  | `${number}`
+  | `${number}${UnitAnyCase}`
+  | `${number} ${UnitAnyCase}`
+
+/**
  * Format options for ms() function
  */
 export interface FormatOptions {

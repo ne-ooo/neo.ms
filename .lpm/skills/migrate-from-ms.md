@@ -1,6 +1,6 @@
 ---
 name: migrate-from-ms
-description: Migration guide from ms to neo.ms — 100% API compatible drop-in replacement, identical default export signature, same format strings and units, new tree-shakeable named exports (parse, format, formatShort, formatLong), exported time constants, TypeScript native (no @types/ms), 1.27x faster, ESM support
+description: Migration guide from ms to neo.ms with compatible APIs, named exports, time constants, TypeScript declarations, and ESM support
 version: "1.0.0"
 globs:
   - "**/*.ts"
@@ -15,16 +15,16 @@ globs:
 
 | | ms | neo.ms |
 |---|---|--------|
-| **Performance** | 9.7M ops/sec | 12.3M ops/sec (1.27x faster) |
-| **Bundle** | ~2 KB | ~1 KB gzipped (48% smaller) |
+| **Benchmarks** | Reference implementation | Results depend on the operation and runtime |
+| **Output** | CommonJS | ESM and CommonJS |
 | **TypeScript** | Requires `@types/ms` | Built-in, strict |
 | **ESM** | CommonJS only | ESM + CJS |
 | **Tree-shaking** | Not possible | Yes (parse/format separately) |
 | **Constants** | Not exported | HOUR, DAY, WEEK, YEAR exported |
 | **Dependencies** | Zero | Zero |
-| **API** | Baseline | 100% compatible |
+| **API** | Baseline | Matches the tested `ms@2.1.3` behavior |
 
-## Drop-In Replacement
+## Replace the Default Import
 
 ```typescript
 // Before
@@ -42,7 +42,7 @@ ms(60000)                       // "1m"
 ms(60000, { long: true })       // "1 minute"
 ```
 
-Every input/output is identical. No code changes needed beyond the import path.
+The tested `ms@2.1.3` inputs and outputs are identical. Check application-specific cases before migration.
 
 ## All Formats — Identical
 
@@ -81,9 +81,8 @@ ms(Infinity)       // throws Error
 ## New: Tree-Shakeable Named Exports
 
 ```typescript
-// Import only what you need — smaller bundles
+// Import only the functions that your application uses
 import { parse } from '@lpm.dev/neo.ms'
-// ~0.8 KB gzipped (parse only)
 
 parse('2 days')    // 172800000
 parse('1h')        // 3600000
@@ -111,21 +110,24 @@ setTimeout(cleanup, 2 * HOUR)
 setInterval(healthCheck, 30 * SECOND)
 ```
 
-No more magic numbers — constants are self-documenting and typo-proof.
+Constants give names to time values and reduce repeated numeric values.
 
 ## New: TypeScript Types
 
 ```typescript
-// ms package requires: npm install @types/ms
+// ms requires a separate @types/ms dependency
 // neo.ms: types are built-in
 
 import ms, { parse, format } from '@lpm.dev/neo.ms'
 import type { TimeUnit, FormatOptions } from '@lpm.dev/neo.ms'
 
 // Overloaded signatures for ms()
-ms('2h')                    // → number | undefined
+ms('2h')                    // → number (valid StringValue)
 ms(7200000)                 // → string
 ms(7200000, { long: true }) // → string
+
+let uncheckedInput: string = getUserInput()
+ms(uncheckedInput)          // → number | undefined
 ```
 
 ## Search-and-Replace Migration
@@ -137,7 +139,7 @@ import ms from 'ms'
 // TO:
 import ms from '@lpm.dev/neo.ms'
 
-// Step 2: No other changes needed — API is 100% compatible
+// Step 2: Run your application tests
 
 // Step 3 (optional): Use named exports for tree-shaking
 // FROM:
@@ -156,4 +158,4 @@ const label = formatShort(duration!)
 - [ ] Remove `ms` from dependencies
 - [ ] Consider using named exports (`parse`, `format`) for tree-shaking
 - [ ] Consider using constants (`HOUR`, `DAY`) instead of magic numbers
-- [ ] All existing code works unchanged — no API differences
+- [ ] Run application tests for inputs that are not in this guide

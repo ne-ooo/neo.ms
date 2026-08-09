@@ -13,7 +13,9 @@ globs:
 
 ## Overview
 
-neo.ms is a zero-dependency time conversion library. 100% API compatible with the `ms` package, 1.27x faster, TypeScript-first, tree-shakeable. Parses human-readable time strings to milliseconds and formats milliseconds back to strings.
+neo.ms is a zero-dependency time conversion library. It parses time strings and formats millisecond values.
+
+The default export matches behaviors tested against `ms@2.1.3`. The package also provides TypeScript types and named ESM exports.
 
 ## Quick Start
 
@@ -32,7 +34,7 @@ ms(60000, { long: true })      // "1 minute"
 ms(-3 * 60000, { long: true }) // "-3 minutes"
 ```
 
-The default export is overloaded: string input → parse, number input → format. 100% backward compatible with `ms@2.1.3`.
+The default export is overloaded: string input → parse, number input → format. Its tested behavior matches `ms@2.1.3`.
 
 ## Named Exports (Tree-Shakeable)
 
@@ -66,7 +68,9 @@ formatLong(1000)        // "1 second"
 formatLong(100)         // "100 ms"
 ```
 
-Import only what you need — `parse` alone is ~0.8 KB gzipped.
+If the input is not a finite number, all formatter functions throw an `Error`.
+
+Import only the functions that your application uses.
 
 ## Supported Units
 
@@ -145,4 +149,17 @@ type TimeUnit =
 interface FormatOptions {
   long?: boolean  // Use long format (default: false)
 }
+```
+
+Valid duration strings use the `StringValue` type for compatibility with `@types/ms`:
+
+```typescript
+import ms from '@lpm.dev/neo.ms'
+import type { StringValue, Unit, UnitAnyCase } from '@lpm.dev/neo.ms'
+
+const duration: StringValue = '2 hours'
+ms(duration)  // number
+
+let uncheckedInput: string = getUserInput()
+ms(uncheckedInput)  // number | undefined
 ```

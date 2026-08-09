@@ -7,6 +7,7 @@ export default defineConfig({
   splitting: false,
   sourcemap: true,
   clean: true,
+  publicDir: 'assets',
   treeshake: true,
   minify: false,
   target: 'es2022',

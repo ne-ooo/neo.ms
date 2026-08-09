@@ -1,6 +1,8 @@
 # @lpm.dev/neo.ms
 
-Zero-dependency time conversion library. Modern, tree-shakeable alternative to the `ms` package. 2-3x faster, 100% API compatible.
+Zero-dependency time conversion library with ESM, CommonJS, and TypeScript support. The default export matches behaviors tested against `ms@2.1.3`.
+
+See [BENCHMARKS.md](./BENCHMARKS.md) for reproducible performance measurements. Results depend on the operation, runtime, and computer.
 
 ## Install
 
@@ -28,7 +30,7 @@ ms(172800000, { long: true })  // '2 days'
 
 ### Default export — `ms(value)`
 
-Drop-in replacement for the `ms` package:
+The default export matches the tested `ms@2.1.3` API:
 
 ```typescript
 import ms from '@lpm.dev/neo.ms'
@@ -68,6 +70,8 @@ formatShort(3600000)   // '1h'
 formatLong(3600000)    // '1 hour'
 ```
 
+If the input is not a finite number, all formatter functions throw an `Error`.
+
 ### Constants
 
 ```typescript
@@ -90,7 +94,7 @@ YEAR    // 31557600000
 | `1m`, `1 min`, `1 minute` | 60,000 |
 | `1h`, `1 hr`, `1 hour` | 3,600,000 |
 | `1d`, `1 day` | 86,400,000 |
-| `1w`, `1 wk`, `1 week` | 604,800,000 |
+| `1w`, `1 week` | 604,800,000 |
 | `1y`, `1 yr`, `1 year` | 31,557,600,000 |
 
 Decimal values are supported: `'1.5h'` → `5400000`
@@ -101,11 +105,11 @@ Decimal values are supported: `'1.5h'` → `5400000`
 // Before
 import ms from 'ms'
 
-// After — exact same API
+// After — same default API for tested cases
 import ms from '@lpm.dev/neo.ms'
 ```
 
-That's it. No other changes needed.
+Run your application tests after migration. The default API matches the tested `ms@2.1.3` cases.
 
 ## License
 

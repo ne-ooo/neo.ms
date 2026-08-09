@@ -13,12 +13,13 @@ import {
   WEEK,
   YEAR,
 } from '../utils/constants.js'
+import type { StringValue } from '../types.js'
 
 /**
- * Pre-compiled regex pattern for performance
+ * Parser pattern
  *
  * Matches: optional negative, number (int or float), optional whitespace, optional unit
- * Pattern is case-insensitive and compiled once at module load for optimal performance.
+ * The pattern is case-insensitive and stored at module scope.
  *
  * Examples:
  * - "100" → 100ms
@@ -30,10 +31,7 @@ const PATTERN =
   /^(-?(?:\d+)?\.?\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|weeks?|w|years?|yrs?|y)?$/i
 
 /**
- * Unit to milliseconds lookup map
- *
- * Pre-computed lookup table for O(1) unit conversion.
- * Much faster than switch statements (O(n)) from the original ms package.
+ * Unit multipliers in milliseconds
  */
 const UNIT_MAP: Record<string, number> = {
   // Years
@@ -110,6 +108,8 @@ const UNIT_MAP: Record<string, number> = {
  * - Seconds: seconds, second, secs, sec, s
  * - Milliseconds: milliseconds, millisecond, msecs, msec, ms
  */
+export function parse(str: StringValue): number
+export function parse(str: string): number | undefined
 export function parse(str: string): number | undefined {
   // Validation: must be a non-empty string
   if (typeof str !== 'string' || str.length === 0) {
@@ -131,7 +131,7 @@ export function parse(str: string): number | undefined {
   const num = parseFloat(match[1]!)
   const unit = (match[2] || 'ms').toLowerCase()
 
-  // Look up unit multiplier (O(1) lookup vs O(n) switch)
+  // Look up the unit multiplier.
   const multiplier = UNIT_MAP[unit]
 
   return multiplier !== undefined ? num * multiplier : undefined
