@@ -14,8 +14,10 @@ describe('ms() main function', () => {
       expect(ms('foo')).toBeUndefined()
     })
 
-    it('should return undefined for empty string', () => {
-      expect(ms('')).toBeUndefined()
+    it('should throw for empty string', () => {
+      expect(() => ms('')).toThrow(
+        'val is not a non-empty string or a valid number'
+      )
     })
   })
 
@@ -40,6 +42,10 @@ describe('ms() main function', () => {
     it('should handle negative values', () => {
       expect(ms(-60000)).toBe('-1m')
       expect(ms(-3600000, { long: true })).toBe('-1 hour')
+    })
+
+    it('should treat null options as the default format', () => {
+      expect(ms(60000, null as any)).toBe('1m')
     })
   })
 

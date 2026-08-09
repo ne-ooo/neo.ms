@@ -11,8 +11,7 @@
  * - Tree-shakeable exports (import only what you need)
  * - TypeScript-first with strict types
  * - Zero runtime dependencies
- * - 2-3x faster than original ms package
- * - 100% backward compatible API
+ * - API behavior tested against ms@2.1.3
  *
  * @packageDocumentation
  */
@@ -25,7 +24,13 @@ export { parse } from './parsers/parse.js'
 export { format, formatShort, formatLong } from './formatters/format.js'
 
 // Type exports
-export type { TimeUnit, FormatOptions } from './types.js'
+export type {
+  TimeUnit,
+  Unit,
+  UnitAnyCase,
+  StringValue,
+  FormatOptions,
+} from './types.js'
 
 // Constants (tree-shakeable)
 export {

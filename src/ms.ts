@@ -1,20 +1,21 @@
 /**
  * Main ms() function entry point
  *
- * 100% backward compatible with the original ms package.
+ * API behavior tested against ms@2.1.3.
  *
  * @packageDocumentation
  */
 
 import { parse } from './parsers/parse.js'
 import { format } from './formatters/format.js'
-import type { FormatOptions } from './types.js'
+import { createInvalidValueError } from './utils/errors.js'
+import type { FormatOptions, StringValue } from './types.js'
 
 /**
  * Parse or format time values
  *
  * This is the main ms() function that matches the original ms package API.
- * 100% backward compatible with ms@2.1.3.
+ * Its tested behavior matches ms@2.1.3.
  *
  * **String input**: Parses time string to milliseconds
  * **Number input**: Formats milliseconds to time string
@@ -48,6 +49,7 @@ import type { FormatOptions } from './types.js'
  * - Seconds: seconds, second, secs, sec, s
  * - Milliseconds: milliseconds, millisecond, msecs, msec, ms
  */
+export default function ms(value: StringValue): number
 export default function ms(value: string): number | undefined
 export default function ms(value: number, options?: FormatOptions): string
 export default function ms(
@@ -56,18 +58,17 @@ export default function ms(
 ): number | string | undefined {
   const type = typeof value
 
-  // String input: parse to milliseconds (parse handles empty strings)
-  if (type === 'string') {
+  // String input: match ms@2.1.3 by rejecting empty strings at this boundary.
+  if (type === 'string' && (value as string).length > 0) {
     return parse(value as string)
   }
 
-  // Number input: format to string
-  if (type === 'number' && isFinite(value as number)) {
-    return format(value as number, options)
+  // Number input: format validates that the number is finite.
+  if (type === 'number') {
+    // ms@2.1.3 treats all falsy option values, including null, as defaults.
+    return format(value as number, options || {})
   }
 
   // Invalid input
-  throw new Error(
-    `val is not a non-empty string or a valid number. val=${JSON.stringify(value)}`
-  )
+  throw createInvalidValueError(value)
 }

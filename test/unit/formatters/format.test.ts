@@ -214,3 +214,19 @@ describe('format', () => {
     expect(format(60000, {})).toBe('1m')
   })
 })
+
+describe.each([
+  ['formatShort', formatShort],
+  ['formatLong', formatLong],
+  ['format', format],
+] as const)('%s invalid input handling', (_name, formatter) => {
+  it.each([
+    [NaN, 'NaN'],
+    [Infinity, 'Infinity'],
+    [-Infinity, '-Infinity'],
+  ])('should reject %s', (value, description) => {
+    expect(() => formatter(value)).toThrow(
+      `val is not a non-empty string or a valid number. val=${description}`
+    )
+  })
+})
