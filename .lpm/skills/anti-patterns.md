@@ -1,7 +1,7 @@
 ---
 name: anti-patterns
 description: Common mistakes when using neo.ms — ms() throws for invalid numbers but parse returns undefined, multi-unit strings not supported, format rounds to single largest unit (precision loss), numeric strings default to milliseconds, year is 365.25 days, 100-char DOS limit, pluralization threshold is 1.5x
-version: "1.0.0"
+version: "1.1.0"
 globs:
   - "**/*.ts"
   - "**/*.js"

@@ -1,7 +1,7 @@
 ---
 name: getting-started
 description: How to use neo.ms — parse time strings to milliseconds (parse), format milliseconds to strings (format, formatShort, formatLong), backward-compatible ms() default export, time constants (MILLISECOND through YEAR), supported units and aliases, short vs long format, tree-shakeable named exports
-version: "1.0.0"
+version: "1.1.0"
 globs:
   - "**/*.ts"
   - "**/*.js"

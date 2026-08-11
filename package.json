@@ -1,6 +1,6 @@
 {
   "name": "@lpm.dev/neo.ms",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Zero-dependency time conversion library - Modern, tree-shakeable alternative to ms package",
   "author": "neo",
   "license": "MIT",
@@ -42,7 +42,8 @@
     "test:watch": "vitest",
     "bench": "lpm run build && vitest bench --run",
     "typecheck": "tsc --noEmit",
-    "prepublishOnly": "lpm run check"
+    "release:check": "lpm run check && lpm audit --level moderate --fail-on vuln",
+    "prepublishOnly": "lpm run release:check"
   },
   "repository": {
     "type": "git",

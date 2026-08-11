@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-08-11
+
 ### Changed
 
 - Updated Vitest to 3.2.7 and tsup to 8.5.1.

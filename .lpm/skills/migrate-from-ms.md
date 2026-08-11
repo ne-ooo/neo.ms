@@ -1,7 +1,7 @@
 ---
 name: migrate-from-ms
 description: Migration guide from ms to neo.ms with compatible APIs, named exports, time constants, TypeScript declarations, and ESM support
-version: "1.0.0"
+version: "1.1.0"
 globs:
   - "**/*.ts"
   - "**/*.js"
